@@ -161,7 +161,7 @@ void my_touchpad_read(lv_indev_t *indev, lv_indev_data_t *data) {
 }
 
 // ================================================
-// ESPNOW BROADCAST SLAVE RECIEVER
+// ESPNOW BROADCAST SLAVE RECEIVER
 
 #define ESPNOW_WIFI_CHANNEL 6
 
@@ -189,7 +189,6 @@ public:
     Serial.printf("  Message: %s\n", (char *)data);
     memcpy(&myData, data, sizeof(myData));
     toReceve = true;
-    // lv_label_set_text_fmt(ui_Label2, "%s", (char *)data);
   }
 };
 
@@ -230,12 +229,7 @@ void setup() {
 
   touch.begin();
 
-  String LVGL_Arduino = "Hello Arduino! ";
-  LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() + "." + lv_version_patch();
-
-
   Serial.begin(115200);
-  Serial.println(LVGL_Arduino);
 
   lv_init();
 
@@ -292,9 +286,7 @@ void setup() {
   // Register the new peer callback
   ESP_NOW.onNewPeer(register_new_master, NULL);
 
-  Serial.println("Setup complete. Waiting for a master to broadcast a message...");
-
-  // Serial.println("Setup done");
+  Serial.println("Setup done");
 }
 
 String s;
@@ -304,12 +296,6 @@ void loop(void) {
   delay(5);          /* let this time pass */
 
   if (toReceve) updateValue();
-  // while (Serial.available()) {
-  //   s = Serial.readStringUntil('\n');
-  //   // int x = s.toInt();
-  //   // lv_arc_set_value(ui_ArcRpm, x);
-  //   // lv_label_set_text_fmt(ui_Label2, "%s", s);
-  // }
 }
 
 void updateValue() {
@@ -341,8 +327,6 @@ void updateValue() {
 void setBrightness(lv_event_t *e) {
   int v = lv_slider_get_value(ui_Slider1);
   tft.setBrightness(v);
-
-  // lv_label_set_text_fmt(ui_Label1, "Brig set: %d", v);
 
   Serial.println(v);
 }
